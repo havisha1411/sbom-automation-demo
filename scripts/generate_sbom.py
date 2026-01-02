@@ -1,28 +1,75 @@
 from cyclonedx.model.bom import Bom
 from cyclonedx.model.component import Component, ComponentType
+from cyclonedx.model.contact import OrganizationalEntity
+from cyclonedx.model.dependency import Dependency
+from cyclonedx.model.tool import Tool
 from cyclonedx.output import make_outputter, OutputFormat, SchemaVersion
 
+
 def generate_sbom():
-    # Create BOM object
     bom = Bom()
 
-    # Create components
-    app = Component(name="sample-python-app", version="1.0.0", type=ComponentType.APPLICATION)
-    dep = Component(name="requests", version="2.31.0", type=ComponentType.LIBRARY)
+    # -------------------------
+    # Metadata → Tools
+    # -------------------------
+    sbom_tool = Tool(
+        name="cyclonedx-bom",
+        version="7.2.1",
+        vendor="CycloneDX"
+    )
+    bom.metadata.tools._tools.add(sbom_tool)
 
-    # Add components to BOM (directly to the set)
-    bom.components.add(app)
+    # -------------------------
+    # Metadata → Application
+    # -------------------------
+    app_supplier = OrganizationalEntity(name="Internal Engineering Team")
+
+    app = Component(
+        name="sample-python-app",
+        version="1.0.0",
+        type=ComponentType.APPLICATION,
+        supplier=app_supplier
+    )
+
+    bom.metadata.component = app
+
+    # -------------------------
+    # Dependency (library only)
+    # -------------------------
+    dep_supplier = OrganizationalEntity(name="Python Packaging Authority")
+
+    dep = Component(
+        name="requests",
+        version="2.31.0",
+        type=ComponentType.LIBRARY,
+        supplier=dep_supplier
+    )
+
     bom.components.add(dep)
 
-    # Generate JSON SBOM (CycloneDX v1.4)
-    outputter = make_outputter(bom=bom, output_format=OutputFormat.JSON, schema_version=SchemaVersion.V1_4)
-    sbom_json = outputter.output_as_string()
+    # -------------------------
+    # Dependency graph
+    # -------------------------
+    app_dep = Dependency(ref=app.bom_ref)
+    dep_dep = Dependency(ref=dep.bom_ref)
 
-    # Save SBOM to file
+    app_dep.dependencies.add(dep_dep)
+    bom.dependencies.add(app_dep)
+
+    # -------------------------
+    # Output SBOM
+    # -------------------------
+    outputter = make_outputter(
+        bom=bom,
+        output_format=OutputFormat.JSON,
+        schema_version=SchemaVersion.V1_4
+    )
+
     with open("sbom/sbom.json", "w") as f:
-        f.write(sbom_json)
+        f.write(outputter.output_as_string())
 
-    print("SBOM generated successfully at sbom/sbom.json")
+    print("SBOM generated with metadata.tools, application, and dependencies")
+
 
 if __name__ == "__main__":
     generate_sbom()
