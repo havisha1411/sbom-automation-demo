@@ -1,9 +1,11 @@
-from cyclonedx.model.bom import Bom
+
+from cyclonedx.model.bom import Bom 
 from cyclonedx.model.component import Component, ComponentType
 from cyclonedx.model.contact import OrganizationalEntity
 from cyclonedx.model.dependency import Dependency
 from cyclonedx.model.tool import Tool
 from cyclonedx.output import make_outputter, OutputFormat, SchemaVersion
+from packageurl import PackageURL  # <-- new import
 
 
 def generate_sbom():
@@ -28,7 +30,8 @@ def generate_sbom():
         name="sample-python-app",
         version="1.0.0",
         type=ComponentType.APPLICATION,
-        supplier=app_supplier
+        supplier=app_supplier,
+        purl=PackageURL.from_string("pkg:generic/sample-python-app@1.0.0")  # <-- wrap in PackageURL
     )
 
     bom.metadata.component = app
@@ -42,7 +45,8 @@ def generate_sbom():
         name="requests",
         version="2.31.0",
         type=ComponentType.LIBRARY,
-        supplier=dep_supplier
+        supplier=dep_supplier,
+        purl=PackageURL.from_string("pkg:pypi/requests@2.31.0")  # <-- wrap in PackageURL
     )
 
     bom.components.add(dep)
@@ -68,7 +72,7 @@ def generate_sbom():
     with open("sbom/sbom.json", "w") as f:
         f.write(outputter.output_as_string())
 
-    print("SBOM generated with metadata.tools, application, and dependencies")
+    print("SBOM generated successfully")
 
 
 if __name__ == "__main__":
