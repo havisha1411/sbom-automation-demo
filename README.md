@@ -1,6 +1,6 @@
 # SBOM Compliance & Automation Demo
 
-[![CI](https://github.com/havisha1411/sbom-automation-demo/actions/workflows/sbom-ci.yml/badge.svg)](https://github.com/havisha1411/sbom-automation-demo/actions/workflows/sbom-ci.yml)
+[![CI](https://github.com/havisha1411/sbom-automation-demo/actions/workflows/sbom-compliance.yml/badge.svg)](https://github.com/havisha1411/sbom-automation-demo/actions/workflows/sbom-compliance.yml)
 ![CycloneDX](https://img.shields.io/badge/SBOM-CycloneDX_v1.4-blue)
 ![Python](https://img.shields.io/badge/Python-3.11-blue)
 ![License](https://img.shields.io/badge/License-MIT-green)
