@@ -5,7 +5,8 @@ from cyclonedx.model.contact import OrganizationalEntity
 from cyclonedx.model.dependency import Dependency
 from cyclonedx.model.tool import Tool
 from cyclonedx.output import make_outputter, OutputFormat, SchemaVersion
-from packageurl import PackageURL  # <-- new import
+from packageurl import PackageURL
+import os
 
 
 def generate_sbom():
@@ -68,6 +69,8 @@ def generate_sbom():
         output_format=OutputFormat.JSON,
         schema_version=SchemaVersion.V1_4
     )
+
+    os.makedirs("sbom", exist_ok=True)
 
     with open("sbom/sbom.json", "w") as f:
         f.write(outputter.output_as_string())
