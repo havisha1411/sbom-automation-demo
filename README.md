@@ -6,9 +6,11 @@
 ![License](https://img.shields.io/badge/License-MIT-green)
 
 
+
 ## 🧩 Overview
 
 Public GitHub project demonstrating **SBOM generation, NTIA validation, VEX handling, and Python-based automation**, integrated with CI/CD workflows on an open-source application.
+
 
 ### Core Features
 
@@ -20,11 +22,13 @@ Public GitHub project demonstrating **SBOM generation, NTIA validation, VEX hand
 | **Automation / CI/CD** | Single `run_demo.py` script executes all steps |
 
 
+
 ## 🏗 Architecture
 
 ![SBOM Automation Architecture](docs/sbom_architecture.png)
 
 > Workflow: Source code → SBOM generation → NTIA validation → vuln_input.json → VEX generation → VEX validation → CI/CD pipeline.
+
 
 
 ## 🔧 Getting Started
@@ -62,12 +66,14 @@ python run_demo.py
 - `vex/vex.json` → Generated VEX
 
 
+
 ## 📝 VEX Support
 
 - Reads vulnerabilities from `vex/vuln_input.json`  
 - Generates VEX statements mapping vulnerabilities to SBOM components  
 - Validates that VEX references exist in the SBOM  
 - Demonstrates automated vulnerability response workflow even without a live vulnerability scanner.
+
 
 
 ## 📜 Regulatory Context
@@ -79,11 +85,13 @@ python run_demo.py
   - Clear vulnerability impact communication
 
 
+
 ## 🛠 Tools & Libraries
 
 - CycloneDX Python Library – SBOM generation  
 - Python 3.11+  
 - Standard libraries: `json`, `datetime`
+
 
 
 ## ✅ Compliance Checks
@@ -93,6 +101,7 @@ python run_demo.py
 - VEX generation & validation
 
 
+
 ## 💡 Notes
 
 - Components include **dependencies only**, not the application itself  
@@ -100,11 +109,13 @@ python run_demo.py
 - Designed to be **CI/CD friendly** for automated SBOM and VEX compliance checks
 
 
+
 ## 🔜 Next Steps
 
 - Integrate with real-world vulnerability feeds (e.g., **NVD**, **PyPI advisories**)  
 - Expand SBOM validations for **licensing and supply chain risks**  
 - Extend VEX mapping to multiple dependencies and ecosystems
+
 
 
 ## 📄 License
