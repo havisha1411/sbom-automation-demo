@@ -27,9 +27,38 @@ Public GitHub project demonstrating **SBOM generation, NTIA validation, VEX hand
 
 ## 🏗 Architecture
 
-![SBOM Automation Architecture](docs/sbom_architecture.png)
+This project demonstrates a **practical SBOM + VEX automation workflow** designed for CI/CD environments.
 
-> Workflow: Source code → SBOM generation → NTIA validation → vuln_input.json → VEX generation → VEX validation → Policy enforcement → CI/CD pipeline.
+### High-Level Flow
+
+1. **SBOM Generation**
+   - Generates a CycloneDX v1.4 SBOM from Python dependencies
+   - Ensures consistent, machine-readable component inventory
+
+2. **NTIA Validation**
+   - Validates presence of NTIA minimum required fields  
+     (`name`, `version`, `supplier`, `purl`)
+   - Fails early if SBOM is incomplete
+
+3. **VEX Generation**
+   - Reads vulnerability data from `vex/vuln_input.json`
+   - Produces CycloneDX VEX statements mapped to SBOM components
+
+4. **VEX Validation**
+   - Ensures all VEX entries reference valid SBOM components
+   - Prevents orphaned or incorrect vulnerability claims
+
+5. **Policy Enforcement**
+   - Applies severity × state decision matrix (NTIA / CISA aligned)
+   - Supports **CI mode** (fail pipeline) and **DEV mode** (log-only)
+   - Outputs a clear policy summary (pass / warn / fail)
+
+6. **CI/CD Integration**
+   - Entire workflow executed via a single entry point: `run_demo.py`
+   - GitHub Actions pipeline enforces policies automatically on every run
+
+> The architecture is a simple and modular way to reflect how SBOM, VEX, and policy checks are typically introduced incrementally in real-world engineering teams.
+
 
 
 
