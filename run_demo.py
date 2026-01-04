@@ -17,6 +17,7 @@ from scripts.generate_sbom import generate_sbom
 from scripts.validate_ntia import validate_ntia
 from scripts.generate_vex import generate_vex
 from scripts.validate_vex import validate_vex
+from scripts.policy_check import enforce_policy
 
 def run_demo():
     print("\n=== SBOM Compliance & Automation Demo ===\n")
@@ -40,6 +41,10 @@ def run_demo():
     print("Step 4: Validating VEX against SBOM...")
     validate_vex("vex/vex.json", "sbom/sbom.json")
     print("")  # blank line for spacing
+
+    print("\nStep 5: Enforcing security policy...")
+    from scripts.policy_check import enforce_policy
+    enforce_policy("vex/vex.json")
 
     print("All steps completed successfully!")
 
