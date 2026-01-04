@@ -7,7 +7,7 @@
       "severity": "medium",
       "fixed_version": "2.32.0",
       "status": "not_affected",
-      "justification": "component_not_present"
+      "justification": ""
     }
   ]
 }
