@@ -9,7 +9,7 @@ SEVERITY_ORDER = ["LOW", "MEDIUM", "HIGH", "CRITICAL"]
 def severity_rank(sev):
     return SEVERITY_ORDER.index(sev)
 
-def enforce_policy(vex_path):
+def enforce_policy(vex_path, mode="ci"):
     with open(vex_path, "r") as f:
         vex = json.load(f)
 
@@ -58,9 +58,14 @@ def enforce_policy(vex_path):
         print("Policy Violations:")
         for f in failures:
             print(f" - {f}")
-        sys.exit(FAIL)
 
-    print("Policy check passed (NTIA/CISA aligned)")
+        if mode == "ci":
+            print("\nCI mode: Pipleine failed, policy voilated")
+            sys.exit(FAIL)
+        else:
+            print("\nDEV mode: violations logged, build continues")
+
+    print("Policy check completed (NTIA/CISA aligned)")
 
 if __name__ == "__main__":
     enforce_policy("vex/vex.json")
