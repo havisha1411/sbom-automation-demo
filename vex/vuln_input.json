@@ -4,9 +4,9 @@
       "cve": "CVE-2023-32681",
       "package": "requests",
       "installed_version": "2.31.0",
-      "severity": "medium",
+      "severity": "high",
       "fixed_version": "2.32.0",
-      "status": "not_affected",
+      "status": "affected",
       "justification": ""
     }
   ]
