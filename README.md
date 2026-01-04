@@ -10,7 +10,7 @@
 
 ## 🧩 Overview
 
-Public GitHub project demonstrating **SBOM generation, NTIA validation, VEX handling, and Python-based automation**, integrated with CI/CD workflows on an open-source application.
+Public GitHub project demonstrating **SBOM generation, NTIA validation, VEX handling, Python-based automation, and policy enforcement**, integrated with CI/CD workflows on an open-source application.
 
 
 ### Core Features
@@ -20,7 +20,8 @@ Public GitHub project demonstrating **SBOM generation, NTIA validation, VEX hand
 | **SBOM Generation** | Python automation using `cyclonedx-bom` (CycloneDX v1.4) |
 | **NTIA Validation** | Ensures SBOM includes `name`, `version`, `supplier`, `purl` |
 | **VEX Handling** | Automates creation & validation of VEX statements from JSON input |
-| **Automation / CI/CD** | Single `run_demo.py` script executes all steps |
+| **Policy Enforcement** | Applies NTIA/CISA-aligned policy based on severity & state (CI & DEV modes) |
+| **Automation / CI/CD** | Single `run_demo.py` script executes all steps, CI/CD pipeline ready |
 
 
 
@@ -28,7 +29,7 @@ Public GitHub project demonstrating **SBOM generation, NTIA validation, VEX hand
 
 ![SBOM Automation Architecture](docs/sbom_architecture.png)
 
-> Workflow: Source code → SBOM generation → NTIA validation → vuln_input.json → VEX generation → VEX validation → CI/CD pipeline.
+> Workflow: Source code → SBOM generation → NTIA validation → vuln_input.json → VEX generation → VEX validation → Policy enforcement → CI/CD pipeline.
 
 
 
@@ -58,13 +59,18 @@ pip install -r requirements.txt
 ### Run Demo
 
 ```bash
+# Default CI mode
 python run_demo.py
+
+# DEV mode (warnings logged but build continues)
+python run_demo.py --mode dev
 ```
 
 **Outputs:**
 
 - `sbom/sbom.json` → Generated SBOM  
-- `vex/vex.json` → Generated VEX
+- `vex/vex.json` → Generated VEX  
+- Policy enforcement output printed in console (violations & summary)
 
 
 
@@ -73,6 +79,11 @@ python run_demo.py
 - Reads vulnerabilities from `vex/vuln_input.json`  
 - Generates VEX statements mapping vulnerabilities to SBOM components  
 - Validates that VEX references exist in the SBOM  
+- Policy enforcement aligns with NTIA/CISA recommendations:  
+  - Severity + state matrix applied (LOW allowed in certain cases, MEDIUM+ must be flagged)  
+  - Missing justification or unknown states are flagged  
+  - Policy summary shows count by severity  
+- Supports **CI mode** (pipeline fails on violations) and **DEV mode** (violations logged but build continues)  
 - Demonstrates automated vulnerability response workflow even without a live vulnerability scanner.
 
 
@@ -82,7 +93,8 @@ python run_demo.py
 - Not a legal compliance tool, but demonstrates **technical readiness**:  
   - SBOM availability  
   - Vulnerability disclosure transparency  
-  - Clear vulnerability impact communication
+  - Clear vulnerability impact communication  
+- Can be adapted for Swiss/EU organizational guidelines
 
 
 ## 🛠 Tools & Libraries
@@ -97,22 +109,24 @@ python run_demo.py
 
 - SBOM generation (CycloneDX v1.4)  
 - NTIA minimal element validation (`name`, `version`, `supplier`, `purl`)  
-- VEX generation & validation
+- VEX generation & validation  
+- Policy enforcement with **severity + state matrix**, CI/DEV modes, and summary output
 
 
 ## 💡 Notes
 
 - Components include **dependencies only**, not the application itself  
 - VEX is **simulated** using JSON input list of known vulnerabilities  
-- Designed to be **CI/CD friendly** for automated SBOM and VEX compliance checks
-
+- Designed to be **CI/CD friendly** for automated SBOM, VEX, and policy compliance checks  
+- Policy summary improves visibility of security posture for reviewers
 
 
 ## 🔜 Next Steps
 
 - Integrate with real-world vulnerability feeds (e.g., **NVD**, **PyPI advisories**)  
 - Expand SBOM validations for **licensing and supply chain risks**  
-- Extend VEX mapping to multiple dependencies and ecosystems
+- Extend VEX mapping to multiple dependencies and ecosystems  
+- Add automated report generation for policy violations (CSV/JSON) for auditing
 
 
 
