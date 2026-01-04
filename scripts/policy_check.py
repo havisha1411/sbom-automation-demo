@@ -50,17 +50,17 @@ def enforce_policy(vex_path):
 
     # --- OUTPUT ---
     if warnings:
-        print("⚠️ Policy Warnings:")
+        print("Policy Warnings:")
         for w in warnings:
             print(f" - {w}")
 
     if failures:
-        print("❌ Policy Violations:")
+        print("Policy Violations:")
         for f in failures:
             print(f" - {f}")
         sys.exit(FAIL)
 
-    print("✅ Policy check passed (NTIA/CISA aligned)")
+    print("Policy check passed (NTIA/CISA aligned)")
 
 if __name__ == "__main__":
     enforce_policy("vex/vex.json")
