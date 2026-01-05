@@ -11,7 +11,21 @@
 
 This project was built to **demonstrate practical SBOM generation, validation, and vulnerability context handling** using real-world standards such as **CycloneDX**, **NTIA minimum SBOM elements**, and **VEX**, in a way that fits naturally into CI/CD workflows.
 
-The focus is not on building a full security product, but on showing **how SBOM, VEX, and policy checks can be automated incrementally** in engineering teams — especially in regulated or compliance-aware environments.
+The focus is **not** on building a full security or compliance product, but on showing **how SBOM, VEX, and policy checks can be automated incrementally** in engineering teams — especially in regulated or compliance-aware environments.
+
+---
+
+## 📌 Project Scope (Important)
+
+This repository is a **reference implementation and learning demo** intended to showcase:
+
+- SBOM generation
+- NTIA minimum elements validation
+- VEX structure and validation
+- Simple, policy-based decision logic
+
+It is **not intended to replace enterprise SCA, SBOM, or vulnerability management tools**.  
+The goal is to demonstrate **correct structure, automation patterns, and engineering thinking**, not to provide a production-ready security product.
 
 ---
 
@@ -48,35 +62,21 @@ This project models a **realistic SBOM + VEX automation flow** commonly used in 
 
 ### High-Level Flow
 
-1. **SBOM Generation**
-   - Generates a CycloneDX v1.4 SBOM from Python dependencies
-   - Produces a machine-readable component inventory
+```
+Source Code / Dependencies
+        ↓
+SBOM Generation (CycloneDX)
+        ↓
+NTIA Minimum Elements Validation
+        ↓
+VEX Processing & Validation
+        ↓
+Policy Enforcement
+        ↓
+CI Pass / Warn / Fail
+```
 
-2. **NTIA Minimum Validation**
-   - Checks for required fields:  
-     `name`, `version`, `supplier`, `purl`
-   - Fails early if mandatory metadata is missing
-
-3. **VEX Generation**
-   - Reads vulnerability input from `vex/vuln_input.json`
-   - Generates CycloneDX-compatible VEX statements
-
-4. **VEX Validation**
-   - Ensures vulnerabilities reference valid SBOM components
-   - Prevents orphaned or inconsistent vulnerability data
-
-5. **Policy Enforcement**
-   - Applies severity × state rules inspired by NTIA/CISA guidance
-   - Produces a clear **policy summary** (pass / warn / fail)
-   - Supports:
-     - **CI mode** → pipeline fails on violations
-     - **DEV mode** → violations logged, execution continues
-
-6. **CI/CD Execution**
-   - Entire workflow runs via `run_demo.py`
-   - GitHub Actions pipeline demonstrates automated enforcement
-
-> The architecture reflects how teams typically adopt SBOM and VEX checks step-by-step rather than all at once.
+> This flow reflects how teams typically adopt SBOM and VEX checks step-by-step rather than all at once.
 
 ---
 
@@ -115,11 +115,17 @@ python run_demo.py
 python run_demo.py --mode dev
 ```
 
-### Outputs
+---
 
-- `sbom/sbom.json` → Generated CycloneDX SBOM  
-- `vex/vex.json` → Generated VEX document  
-- Console output → Validation results and policy summary
+## 📤 Example Output (Summary)
+
+- CycloneDX SBOM generated successfully
+- NTIA minimum required elements: **validated**
+- VEX statements: **structurally valid**
+- Policy result:
+  - **PASS / WARN / FAIL** based on severity and vulnerability state
+
+Console output provides a clear validation and policy summary suitable for CI logs.
 
 ---
 
@@ -190,4 +196,3 @@ This scope is intentional and documented.
 
 MIT License  
 © 2026 Keerthana Raghavendra (havisha1411)
-
